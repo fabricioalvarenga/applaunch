@@ -18,7 +18,7 @@ struct AppLaunchApp: App {
                     if let window = NSApplication.shared.windows.first {
                         window.styleMask = [.borderless, .fullSizeContentView]
                         window.isMovable = false
-                        window.level = .floating
+//                        window.level = .floating
                         window.collectionBehavior = [.canJoinAllSpaces, .fullScreenAuxiliary]
                         
                         if let screen = NSScreen.main {

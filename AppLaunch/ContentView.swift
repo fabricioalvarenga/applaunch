@@ -48,7 +48,19 @@ struct ContentView: View {
         AppItem(name: "Finder", icon: "folder.fill", color: .blue),
         AppItem(name: "System Preferences", icon: "switch.2", color: .gray),
         AppItem(name: "QuickTime", icon: "play.rectangle.fill", color: .gray),
-        AppItem(name: "TextEdit", icon: "doc.text.fill", color: .blue),
+        AppItem(name: "Safari", icon: "safari", color: .blue),
+        AppItem(name: "Mail", icon: "envelope.fill", color: .blue),
+        AppItem(name: "Photos", icon: "photo.on.rectangle", color: .pink),
+        AppItem(name: "Messages", icon: "message.fill", color: .green),
+        AppItem(name: "Calendar", icon: "calendar", color: .red),
+        AppItem(name: "Notes", icon: "note.text", color: .yellow),
+        AppItem(name: "Reminders", icon: "checklist", color: .orange),
+        AppItem(name: "Music", icon: "music.note", color: .pink),
+        AppItem(name: "Podcasts", icon: "podcast.fill", color: .purple),
+        AppItem(name: "TV", icon: "tv.fill", color: .black),
+        AppItem(name: "Books", icon: "book.fill", color: .orange),
+        AppItem(name: "App Store", icon: "app.gift.fill", color: .blue),
+        AppItem(name: "Settings", icon: "gearshape.fill", color: .gray),
     ]
     
     var body: some View {
@@ -132,7 +144,7 @@ struct LaunchpadView: View {
         ZStack {
             Color.black.opacity(0.4)
                 .ignoresSafeArea()
-//                .background(.ultraThinMaterial)
+                .background(.ultraThinMaterial)
             
             VStack(spacing: 0) {
                 HStack {
@@ -175,21 +187,28 @@ struct LaunchpadView: View {
                 .padding(.horizontal, 64)
                 .padding(.top, 64)
                 
-                ScrollView {
-                    LazyVGrid(columns: Array(repeating: GridItem(.flexible(), spacing: 32), count: columns), spacing: 32) {
-                        ForEach(getAppsForPage(currentPage)) { app in
-                            AppIconView(app: app, size: 80)
-                                .onTapGesture {
-                                    handleAppClick(app)
+                GeometryReader { geometry in
+                    let iconDimension = (geometry.size.width / CGFloat(columns * 2 + 1)) * 0.8
+                    let horizontalSpacing = (geometry.size.width - (iconDimension * CGFloat(columns))) / CGFloat(columns + 1)
+                    let verticalSpacing = (geometry.size.height - (iconDimension * CGFloat(rows))) / CGFloat(rows + 1)
+                    let gridRows = Array(repeating: GridItem(.fixed(iconDimension), spacing: verticalSpacing * 0.8), count: rows)
+                    
+                    ScrollView(.horizontal, showsIndicators: false) {
+                        HStack {
+                            LazyHGrid(rows: gridRows, spacing: horizontalSpacing) {
+                                ForEach(filteredApps) { app in
+                                    AppIconView(app: app, size: iconDimension)
+                                        .onTapGesture {
+                                            handleAppClick(app)
+                                        }
                                 }
+                            }
+                            .padding(.horizontal, horizontalSpacing)
                         }
                     }
-                    .padding(.vertical, 64)
-                    .padding(.horizontal, 160)
-                    .background(.clear)
+                    .padding(.top, -verticalSpacing)
                 }
-                .padding(.vertical, 36)
-                
+                    
                 if totalPages > 1 && searchText.isEmpty {
                     HStack(spacing: 8) {
                         ForEach(0..<totalPages, id: \.self) { page in
@@ -281,9 +300,9 @@ struct AppIconView: View {
         .scaleEffect(appeared ? 1 : 0.5)
         .opacity(appeared ? 1 : 0)
         .onAppear {
-            withAnimation(.spring(response: 0.4, dampingFraction: 0.7).delay(Double.random(in: 0...0.2))) {
+//            withAnimation(.spring(response: 0.4, dampingFraction: 0.7).delay(Double.random(in: 0...0.2))) {
                 appeared = true
-            }
+//            }
         }
         .onHover { hovering in
             isHovered = hovering

@@ -7,18 +7,24 @@
 
 import SwiftUI
 
+//@main
+//struct AppLaunchApp: App {
+//    @NSApplicationDelegateAdaptor(AppDelegate.self) var appDelegate
+//    
+//    var body: some Scene {
+//        Settings { EmptyView() }
+//    }
+//}
+
 @main
 struct AppLaunchApp: App {
-//    @NSApplicationDelegateAdaptor(AppDelegate.self) var appDelegate
-    
     var body: some Scene {
         WindowGroup {
             ContentView()
                 .onAppear {
                     if let window = NSApplication.shared.windows.first {
-                        window.styleMask = [.borderless, .fullSizeContentView]
                         window.isMovable = false
-//                        window.level = .floating
+                        window.level = .floating
                         window.collectionBehavior = [.canJoinAllSpaces, .fullScreenAuxiliary]
                         
                         if let screen = NSScreen.main {
@@ -27,6 +33,5 @@ struct AppLaunchApp: App {
                     }
                 }
         }
-        .windowResizability(.contentSize)
     }
 }

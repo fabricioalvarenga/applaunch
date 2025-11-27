@@ -24,7 +24,8 @@ struct AppLaunchApp: App {
                 .onAppear {
                     if let window = NSApplication.shared.windows.first {
                         window.isMovable = false
-                        window.level = .floating
+//                        window.level = .floating
+                        window.level = .normal
                         window.collectionBehavior = [.canJoinAllSpaces, .fullScreenAuxiliary]
                         
                         if let screen = NSScreen.main {

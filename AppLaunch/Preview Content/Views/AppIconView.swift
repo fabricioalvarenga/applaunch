@@ -9,7 +9,6 @@ import SwiftUI
 
 struct AppIconView: View {
     @State private var isHovered = false
-    @State private var appeared = false
     
     private let app: AppInfo
     private let iconSize: CGFloat
@@ -38,11 +37,6 @@ struct AppIconView: View {
                 .lineLimit(1)
         }
         .frame(width: iconSize)
-        .scaleEffect(appeared ? 1 : 0.5)
-        .opacity(appeared ? 1 : 0)
-        .onAppear {
-            appeared = true
-        }
         .onHover { hovering in
             isHovered = hovering
         }

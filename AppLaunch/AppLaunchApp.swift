@@ -7,15 +7,6 @@
 
 import SwiftUI
 
-//@main
-//struct AppLaunchApp: App {
-//    @NSApplicationDelegateAdaptor(AppDelegate.self) var appDelegate
-//    
-//    var body: some Scene {
-//        Settings { EmptyView() }
-//    }
-//}
-
 @main
 struct AppLaunchApp: App {
     var body: some Scene {

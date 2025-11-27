@@ -10,11 +10,11 @@ import SwiftUI
 struct LaunchpadView: View {
     @State private var searchText = ""
 
-    private var apps = Apps.items
-    private var columns = 7
-    private var rows = 5
+    private var apps: [AppInfo]
+    private var columns: Int
+    private var rows: Int
     
-    init(apps: [AppItem] = [], columns: Int = 7, rows: Int = 5) {
+    init(apps: [AppInfo], columns: Int = 7, rows: Int = 5) {
         self.apps = apps
         self.columns = columns
         self.rows = rows
@@ -24,9 +24,9 @@ struct LaunchpadView: View {
         columns * rows
     }
     
-    private var filteredApps: [AppItem] {
-        var filledApps: [AppItem] = []
-        
+     private var filteredApps: [AppInfo] {
+        var filledApps: [AppInfo] = []
+       
         if searchText.isEmpty {
             filledApps = apps
         } else {
@@ -37,10 +37,10 @@ struct LaunchpadView: View {
         let remainder = count % (appsPerPage)
         let elementsToAdd = appsPerPage - remainder
         
-        var fillerElements: [AppItem] = []
-        
+        var fillerElements: [AppInfo] = []
+
         for _ in 0..<(elementsToAdd - 1) {
-            fillerElements.append(AppItem(id: UUID(), name: "", icon: "", color: .clear))
+            fillerElements.append(AppInfo(name: ""))
         }
         
         filledApps.append(contentsOf: fillerElements)

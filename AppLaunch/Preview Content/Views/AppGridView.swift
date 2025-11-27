@@ -9,11 +9,11 @@ import SwiftUI
 
 struct AppGridView: View {
     private let gridRows: [GridItem]
-    private let apps: [AppItem]
+    private let apps: [AppInfo]
     private let horizontalSpacing: CGFloat
     private let iconSize: CGFloat
     
-    init(gridRows: [GridItem], apps: [AppItem], horizontalSpacing: CGFloat, iconSize: CGFloat) {
+    init(gridRows: [GridItem], apps: [AppInfo], horizontalSpacing: CGFloat, iconSize: CGFloat) {
         self.gridRows = gridRows
         self.apps = apps
         self.horizontalSpacing = horizontalSpacing
@@ -34,7 +34,7 @@ struct AppGridView: View {
         }
     }
     
-    func handleAppClick(_ app: AppItem) {
+    func handleAppClick(_ app: AppInfo) {
         let alert = NSAlert()
         alert.messageText = "Abrindo \(app.name)"
         alert.informativeText = "App clicado: \(app.name)"

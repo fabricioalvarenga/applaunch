@@ -8,8 +8,10 @@
 import SwiftUI
 
 struct ContentView: View {
+    @State private var viewModel = AppScanner()
     
     var body: some View {
-        LaunchpadView()
+//        LaunchpadView(apps: Apps.items)
+        LaunchpadView(apps: viewModel.apps)
     }
 }

@@ -21,4 +21,14 @@ struct AppInfo: Identifiable {
         self.bundleURL = bundleURL
         self.bundleIdentifier = bundleIdentifier
     }
+    
+    static var emptyAppInfo: Self {
+        .init(name: "")
+    }
+    
+    static func createEmptyAppsInfo(count: Int) -> [Self] {
+        var emptyApp: [Self] = []
+        for _ in 0..<count { emptyApp.append(Self.emptyAppInfo) }
+        return emptyApp
+    }
 }

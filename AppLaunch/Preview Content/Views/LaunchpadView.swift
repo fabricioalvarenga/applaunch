@@ -9,7 +9,7 @@ import SwiftUI
 
 struct LaunchpadView: View {
     @State private var searchText = ""
-
+    
     private var apps: [AppInfo]
     private var columns: Int
     private var rows: Int
@@ -24,26 +24,44 @@ struct LaunchpadView: View {
         columns * rows
     }
     
-     private var filteredApps: [AppInfo] {
+    // Filtra os apps com base no campo de pesquisa
+    // Adiciona uma coluna de apps em branco no iníco do array
+    // Adiciona uma coluna de apps em branco entre cada coluna do array
+    // Adiciona a quantidade de apps em branco necessário para que ...
+    // ... cada página fique com a quantidade uniforme de apps
+    private var filteredApps: [AppInfo] {
         var filledApps: [AppInfo] = []
-       
+        
+        // Filtra os apps com base no campo de pesquisa
         if searchText.isEmpty {
             filledApps = apps
         } else {
             filledApps = apps.filter { $0.name.localizedCaseInsensitiveContains(searchText) }
         }
         
-        let count = filledApps.count
-        let remainder = count % (appsPerPage)
-        let elementsToAdd = appsPerPage - remainder
-        
-        var fillerElements: [AppInfo] = []
-
-        for _ in 0..<(elementsToAdd - 1) {
-            fillerElements.append(AppInfo(name: ""))
+        // Adiciona uma coluna de apps em branco no início do array e
+        // adciona uma coluna de apps em branco entre cada coluna do array
+        var position = 0
+        var shift = 0
+        while position < filledApps.count {
+            filledApps.insert(contentsOf: AppInfo.createEmptyAppsInfo(count: rows), at: position)
+            position += rows * 2
+            
+            let remainder = (position + shift) % ((appsPerPage * 2) - rows)
+            if remainder == rows {
+                filledApps.insert(contentsOf: AppInfo.createEmptyAppsInfo(count: rows), at: position)
+                position += rows
+                shift += rows
+            }
         }
         
-        filledApps.append(contentsOf: fillerElements)
+        // Adiciona a quantidade de apps em branco necessário para que
+        // cada página fique com a quantidade uniforme de apps
+        let count = filledApps.count
+        let remainder = count % (appsPerPage * 2 + rows)
+        let elementsToAdd = (appsPerPage * 2) - remainder
+        
+        filledApps.append(contentsOf: AppInfo.createEmptyAppsInfo(count: elementsToAdd))
         
         return filledApps
     }
@@ -56,24 +74,17 @@ struct LaunchpadView: View {
                 closeAppButton
                 Spacer()
             }
-            .padding(.horizontal, 64)
-            .padding(.top, 64)
+            .padding(.top, 8)
             
             GeometryReader { geometry in
-                let iconSize = (geometry.size.width / CGFloat(columns * 2 + 1)) * 0.8
-                let horizontalSpacing = (geometry.size.width - (iconSize * CGFloat(columns))) / CGFloat(columns + 1)
-                let verticalSpacing = (geometry.size.height - (iconSize * CGFloat(rows))) / CGFloat(rows + 1)
-                let gridRows = Array(repeating: GridItem(.fixed(iconSize), spacing: verticalSpacing * 0.8), count: rows)
-                
                 ScrollView(.horizontal, showsIndicators: false) {
                     AppGridView(
-                        gridRows: gridRows,
+                        rows: rows,
+                        columns: columns,
                         apps: filteredApps,
-                        horizontalSpacing: horizontalSpacing,
-                        iconSize: iconSize
+                        geometry: geometry
                     )
                 }
-                .padding(.top, -verticalSpacing)
                 .scrollTargetBehavior(.paging)
             }
         }

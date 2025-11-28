@@ -26,15 +26,12 @@ struct AppIconView: View {
                     .frame(height: iconSize)
                     .scaleEffect(isHovered ? 1.1 : 1.0)
                     .animation(.spring(response: 0.3, dampingFraction: 0.6), value: isHovered)
-            } else {
-                EmptyView()
-                    .frame(height: iconSize)
+                
+                Text(app.name)
+                    .font(.system(size: 12, weight: .medium))
+                    .foregroundStyle(.white)
+                    .lineLimit(1)
             }
-            
-            Text(app.name)
-                .font(.system(size: 12, weight: .medium))
-                .foregroundStyle(.white)
-                .lineLimit(1)
         }
         .frame(width: iconSize)
         .onHover { hovering in

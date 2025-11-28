@@ -20,12 +20,7 @@ struct ContentView: View {
             if appeared {
                 LaunchpadView(viewModel: viewModel)
                     .transition(
-                        .asymmetric(
-                            insertion: AnyTransition.opacity
-                                .combined(with: .scale(scale: 1.1)),
-                            removal: AnyTransition.opacity
-                                .combined(with: .scale(scale: 0.9))
-                        )
+                        AnyTransition.asymmetric(insertion: .launchpadOpen, removal: .launchpadClose)
                     )
             }
         }

@@ -30,16 +30,16 @@ struct ContentView: View {
             }
         }
         .onTapGesture {
-            withAnimation(.spring(response: 0.1, dampingFraction: 1.0)) {
+            withAnimation(.spring(response: 0.2, dampingFraction: 1.0)) {
                 appeared = false
             }
                 
-            DispatchQueue.main.asyncAfter(deadline: .now() + 0.15) {
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
                 NSApplication.shared.terminate(nil)
             }
         }
         .onAppear {
-            withAnimation(.spring(response: 0.35, dampingFraction: 1.0)) {
+            withAnimation(.spring(response: 0.5, dampingFraction: 1.0)) {
                 appeared = true
             }
         }

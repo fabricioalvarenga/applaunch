@@ -18,7 +18,7 @@ struct ContentView: View {
                 .ignoresSafeArea()
             
             if appeared {
-                LaunchpadView(apps: viewModel.apps)
+                LaunchpadView(viewModel: viewModel)
                     .transition(
                         .asymmetric(
                             insertion: AnyTransition.opacity

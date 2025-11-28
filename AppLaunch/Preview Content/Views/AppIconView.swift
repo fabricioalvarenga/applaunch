@@ -12,10 +12,12 @@ struct AppIconView: View {
     
     private let app: AppInfo
     private let iconSize: CGFloat
+    private let onTapGesture: () -> Void
     
-    init(app: AppInfo, iconSize: CGFloat) {
+    init(app: AppInfo, iconSize: CGFloat, onTapGesture: @escaping () -> Void) {
         self.app = app
         self.iconSize = iconSize
+        self.onTapGesture = onTapGesture
     }
    
     var body: some View {
@@ -34,6 +36,7 @@ struct AppIconView: View {
             }
         }
         .frame(width: iconSize)
+        .onTapGesture(perform: onTapGesture)
         .onHover { hovering in
             isHovered = hovering
         }

@@ -8,14 +8,14 @@
 import SwiftUI
 
 struct LaunchpadView: View {
+    @Bindable var viewModel: AppScanner
     @State private var searchText = ""
     
-    private var apps: [AppInfo]
     private var columns: Int
     private var rows: Int
     
-    init(apps: [AppInfo], columns: Int = 7, rows: Int = 5) {
-        self.apps = apps
+    init(viewModel: AppScanner, columns: Int = 7, rows: Int = 5) {
+        self._viewModel = Bindable(viewModel)
         self.columns = columns
         self.rows = rows
     }
@@ -34,9 +34,9 @@ struct LaunchpadView: View {
         
         // Filtra os apps com base no campo de pesquisa
         if searchText.isEmpty {
-            filledApps = apps
+            filledApps = viewModel.apps
         } else {
-            filledApps = apps.filter { $0.name.localizedCaseInsensitiveContains(searchText) }
+            filledApps = viewModel.apps.filter { $0.name.localizedCaseInsensitiveContains(searchText) }
         }
         
         // Adiciona uma coluna de apps em branco no início do array e
@@ -78,6 +78,7 @@ struct LaunchpadView: View {
             GeometryReader { geometry in
                 ScrollView(.horizontal, showsIndicators: false) {
                     AppGridView(
+                        viewModel: viewModel,
                         rows: rows,
                         columns: columns,
                         apps: filteredApps,

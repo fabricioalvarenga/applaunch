@@ -8,6 +8,8 @@
 import SwiftUI
 
 struct AppGridView: View {
+    @Bindable var viewModel: AppScanner
+    
     private let rows: Int
     private let columns: Int
     private let apps: [AppInfo]
@@ -17,7 +19,8 @@ struct AppGridView: View {
     private let gridRows: [GridItem]
 
     
-    init(rows: Int, columns: Int, apps: [AppInfo], geometry: GeometryProxy) {
+    init(viewModel: AppScanner, rows: Int, columns: Int, apps: [AppInfo], geometry: GeometryProxy) {
+        self._viewModel = Bindable(viewModel)
         self.rows = rows
         self.columns = columns
         self.apps = apps
@@ -31,10 +34,10 @@ struct AppGridView: View {
     var body: some View {
         LazyHGrid(rows: gridRows, spacing: 0) {
             ForEach(apps) { app in
-                AppIconView(app: app, iconSize: iconSize)
-                    .onTapGesture {
-                        handleAppClick(app)
-                    }
+                AppIconView(app: app, iconSize: iconSize) {
+                    viewModel.launchApp(app)
+//                    handleAppClick(app)
+                }
             }
         }
     }

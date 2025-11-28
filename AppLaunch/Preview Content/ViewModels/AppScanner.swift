@@ -83,7 +83,7 @@ class AppScanner {
         )
     }
     
-    func launchApp(app: AppInfo) {
+    func launchApp(_ app: AppInfo) {
         guard let bundleURL = app.bundleURL else {
             return
         }

@@ -71,7 +71,6 @@ struct LaunchpadView: View {
             HStack {
                 Spacer()
                 searchTextField
-                closeAppButton
                 Spacer()
             }
             .padding(.top, 8)
@@ -120,22 +119,4 @@ struct LaunchpadView: View {
         )
         
     }
-    
-    private var closeAppButton: some View {
-        Button {
-        } label: {
-            Image(systemName: "xmark")
-                .font(.system(size: 18, weight: .semibold))
-                .foregroundStyle(.white.opacity(0.6))
-                .frame(width: 40, height: 40)
-                .clipShape(.circle)
-                .overlay(
-                    Circle()
-                        .stroke(Color.white.opacity(0.2), lineWidth: 1)
-                )
-        }
-        .buttonStyle(.plain)
-        
-    }
-    
 }

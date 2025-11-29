@@ -70,13 +70,10 @@ class AppScanner {
         
         let bundleIdentifier = bundle.bundleIdentifier
         let appIcon = NSWorkspace.shared.icon(forFile: url.path)
-        var appName = spotlightDisplayName(for: url)
         
+        var appName = spotlightDisplayName(for: url)
         if appName == nil {
-            appName = bundle.localizedInfoDictionary?["CFBundleDisplayName"] as? String
-            ?? bundle.object(forInfoDictionaryKey: "CFBundleDisplayName") as? String
-            ?? bundle.object(forInfoDictionaryKey: "CFBundleName") as? String
-            ?? url.deletingLastPathComponent().lastPathComponent
+            appName = bundleDisplayName(for: bundle, and: url)
         }
         
         return AppInfo(
@@ -85,6 +82,15 @@ class AppScanner {
             bundleURL: url,
             bundleIdentifier: bundleIdentifier
         )
+    }
+    
+    func bundleDisplayName(for bundle: Bundle, and url: URL) -> String? {
+        let appName = bundle.localizedInfoDictionary?["CFBundleDisplayName"] as? String
+        ?? bundle.object(forInfoDictionaryKey: "CFBundleDisplayName") as? String
+        ?? bundle.object(forInfoDictionaryKey: "CFBundleName") as? String
+        ?? url.deletingLastPathComponent().lastPathComponent
+            
+        return appName
     }
     
     func spotlightDisplayName(for url: URL) -> String? {

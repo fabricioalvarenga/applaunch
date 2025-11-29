@@ -9,6 +9,7 @@ import SwiftUI
 
 struct AppGridView: View {
     @Bindable var viewModel: AppScanner
+    @Binding var appClosed: Bool
     
     private let rows: Int
     private let columns: Int
@@ -19,12 +20,20 @@ struct AppGridView: View {
     private let gridRows: [GridItem]
 
     
-    init(viewModel: AppScanner, rows: Int, columns: Int, apps: [AppInfo], geometry: GeometryProxy) {
+    init(
+        viewModel: AppScanner,
+        rows: Int,
+        columns: Int,
+        apps: [AppInfo],
+        geometry: GeometryProxy,
+        appClosed: Binding<Bool> = Binding.constant(false)
+    ) {
         self._viewModel = Bindable(viewModel)
         self.rows = rows
         self.columns = columns
         self.apps = apps
         self.geometry = geometry
+        self._appClosed = appClosed
         
         iconSize = geometry.size.width / ((CGFloat(columns) * 2) + 1) 
         verticalSpacing = (geometry.size.height - (iconSize * CGFloat(rows))) / CGFloat(rows + 1)
@@ -36,7 +45,10 @@ struct AppGridView: View {
             ForEach(apps) { app in
                 AppIconView(app: app, iconSize: iconSize) {
                     viewModel.launchApp(app)
-//                    handleAppClick(app)
+                    
+                    withAnimation(.spring(response: 0.2, dampingFraction: 1.0)) {
+                        appClosed = true
+                    }
                 }
             }
         }

@@ -9,7 +9,7 @@ import SwiftUI
 
 struct ContentView: View {
     @State private var viewModel = AppScanner()
-    @State private var appeared = false
+    @State private var appClosed = true
     
     var body: some View {
         ZStack {
@@ -17,25 +17,28 @@ struct ContentView: View {
                 .opacity(0.5)
                 .ignoresSafeArea()
             
-            if appeared {
-                LaunchpadView(viewModel: viewModel)
-                    .transition(
-                        AnyTransition.asymmetric(insertion: .launchpadOpen, removal: .launchpadClose)
-                    )
+            if !appClosed {
+                LaunchpadView(viewModel: viewModel, appClosed: $appClosed)
             }
         }
+        .transition(
+            AnyTransition.asymmetric(insertion: .launchpadOpen, removal: .launchpadClose)
+        )
         .onTapGesture {
             withAnimation(.spring(response: 0.2, dampingFraction: 1.0)) {
-                appeared = false
-            }
-                
-            DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
-                NSApplication.shared.terminate(nil)
+                appClosed = true
             }
         }
         .onAppear {
             withAnimation(.spring(response: 0.5, dampingFraction: 1.0)) {
-                appeared = true
+                appClosed = false
+            }
+        }
+        .onChange(of: appClosed) { oldValue, newValue in
+            if newValue {
+                DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
+                    NSApplication.shared.terminate(nil)
+                }
             }
         }
     }

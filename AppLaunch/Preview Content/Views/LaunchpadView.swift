@@ -10,14 +10,21 @@ import SwiftUI
 struct LaunchpadView: View {
     @Bindable var viewModel: AppScanner
     @State private var searchText = ""
+    @Binding var appClosed: Bool
     
     private var columns: Int
     private var rows: Int
     
-    init(viewModel: AppScanner, columns: Int = 7, rows: Int = 5) {
+    init(
+        viewModel: AppScanner,
+        columns: Int = 7,
+        rows: Int = 5,
+        appClosed: Binding<Bool> = Binding.constant(false)
+    ) {
         self._viewModel = Bindable(viewModel)
         self.columns = columns
         self.rows = rows
+        self._appClosed = appClosed
     }
     
     private var appsPerPage: Int {
@@ -82,7 +89,8 @@ struct LaunchpadView: View {
                         rows: rows,
                         columns: columns,
                         apps: filteredApps,
-                        geometry: geometry
+                        geometry: geometry,
+                        appClosed: $appClosed
                     )
                 }
                 .scrollTargetBehavior(.paging)

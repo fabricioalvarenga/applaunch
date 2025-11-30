@@ -22,14 +22,15 @@ struct ContentView: View {
             
             if !appClosed {
                 LaunchpadView(viewModel: viewModel, appClosed: $appClosed)
+                    .transition(
+                        AnyTransition.asymmetric(insertion: .launchpadOpen, removal: .launchpadClose)
+                    )
+                
             }
         }
         .frame(width: screenWidth, height: scrrenHeight)
-        .transition(
-            AnyTransition.asymmetric(insertion: .launchpadOpen, removal: .launchpadClose)
-        )
         .onTapGesture {
-            withAnimation(.spring(response: 0.2, dampingFraction: 1.0)) {
+            withAnimation(.spring(response: 0.1, dampingFraction: 1.0)) {
                 appClosed = true
             }
         }
@@ -40,7 +41,7 @@ struct ContentView: View {
         }
         .onChange(of: appClosed) { oldValue, newValue in
             if newValue {
-                DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
+                DispatchQueue.main.asyncAfter(deadline: .now() + 0.125) {
                     NSApplication.shared.terminate(nil)
                 }
             }

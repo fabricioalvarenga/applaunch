@@ -46,7 +46,7 @@ struct AppGridView: View {
                 AppIconView(app: app, iconSize: iconSize) {
                     viewModel.launchApp(app)
                     
-                    withAnimation(.spring(response: 0.2, dampingFraction: 1.0)) {
+                    withAnimation(.spring(response: 0.1, dampingFraction: 1.0)) {
                         appClosed = true
                     }
                 }

@@ -17,13 +17,6 @@ struct AppLaunchApp: App {
                         window.standardWindowButton(.closeButton)?.isHidden = true
                         window.standardWindowButton(.miniaturizeButton)?.isHidden = true
                         window.standardWindowButton(.zoomButton)?.isHidden = true
-                        window.collectionBehavior = [.fullScreenAuxiliary]
-                        
-                        if let screen = NSScreen.main {
-                            
-                            window.setFrame(screen.visibleFrame, display: true)
-                        }
-
                     }
                 }
         }

@@ -107,7 +107,7 @@ class AppScanner {
             return
         }
         
-        DispatchQueue.global(qos: .default).async {
+        DispatchQueue.global(qos: .default).asyncAfter(deadline: .now() + 0.1) {
             NSWorkspace.shared.open(bundleURL)
         }
     }

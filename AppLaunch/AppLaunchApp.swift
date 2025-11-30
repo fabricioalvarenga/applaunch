@@ -12,8 +12,8 @@ struct AppLaunchApp: App {
     var body: some Scene {
         WindowGroup {
             ContentView()
-//                .onAppear {
-//                    if let window = NSApplication.shared.windows.first {
+                .onAppear {
+                    if let window = NSApplication.shared.windows.first {
 //                        window.isMovable = false
 //                        window.level = .floating
 //                        window.level = .normal
@@ -22,8 +22,13 @@ struct AppLaunchApp: App {
 //                        if let screen = NSScreen.main {
 //                            window.setFrame(screen.frame, display: true)
 //                        }
-//                    }
-//                }
+                        
+                        window.standardWindowButton(.closeButton)?.isHidden = true
+                        window.standardWindowButton(.miniaturizeButton)?.isHidden = true
+                        window.standardWindowButton(.zoomButton)?.isHidden = true
+                    }
+                }
         }
+        .windowStyle(.hiddenTitleBar)
     }
 }

@@ -11,16 +11,20 @@ struct ContentView: View {
     @State private var viewModel = AppScanner()
     @State private var appClosed = true
     
+    private let screenWidth = NSScreen.main?.visibleFrame.width ?? 800
+    private let scrrenHeight = NSScreen.main?.visibleFrame.height ?? 800
+    
     var body: some View {
         ZStack {
             Color.blue
-                .opacity(0.5)
                 .ignoresSafeArea()
+                .opacity(0.5)
             
             if !appClosed {
                 LaunchpadView(viewModel: viewModel, appClosed: $appClosed)
             }
         }
+        .frame(width: screenWidth, height: scrrenHeight)
         .transition(
             AnyTransition.asymmetric(insertion: .launchpadOpen, removal: .launchpadClose)
         )

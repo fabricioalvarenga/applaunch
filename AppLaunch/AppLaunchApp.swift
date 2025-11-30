@@ -14,21 +14,20 @@ struct AppLaunchApp: App {
             ContentView()
                 .onAppear {
                     if let window = NSApplication.shared.windows.first {
-//                        window.isMovable = false
-//                        window.level = .floating
-//                        window.level = .normal
-//                        window.collectionBehavior = [.canJoinAllSpaces, .fullScreenAuxiliary]
-//                        
-//                        if let screen = NSScreen.main {
-//                            window.setFrame(screen.frame, display: true)
-//                        }
-                        
                         window.standardWindowButton(.closeButton)?.isHidden = true
                         window.standardWindowButton(.miniaturizeButton)?.isHidden = true
                         window.standardWindowButton(.zoomButton)?.isHidden = true
+                        window.collectionBehavior = [.fullScreenAuxiliary]
+                        
+                        if let screen = NSScreen.main {
+                            
+                            window.setFrame(screen.visibleFrame, display: true)
+                        }
+
                     }
                 }
         }
         .windowStyle(.hiddenTitleBar)
+        .windowResizability(.contentSize)
     }
 }

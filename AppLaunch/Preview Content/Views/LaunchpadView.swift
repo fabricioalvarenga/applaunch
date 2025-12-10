@@ -34,43 +34,49 @@ struct LaunchpadView: View {
     // Filtra os apps com base no campo de pesquisa
     // Adiciona uma coluna de apps em branco no iníco do array
     // Adiciona uma coluna de apps em branco entre cada coluna do array
-    // Adiciona a quantidade de apps em branco necessário para que ...
+    // Adiciona a quantidade de apps em branco necessária para que ...
     // ... cada página fique com a quantidade uniforme de apps
     private var filteredApps: [AppInfo] {
         var filledApps: [AppInfo] = []
         
-        // Filtra os apps com base no campo de pesquisa
         if searchText.isEmpty {
             filledApps = viewModel.apps
         } else {
             filledApps = viewModel.apps.filter { $0.name.localizedCaseInsensitiveContains(searchText) }
         }
         
-        // Adiciona uma coluna de apps em branco no início do array e
-        // adciona uma coluna de apps em branco entre cada coluna do array
-        var position = 0
-        var shift = 0
-        while position < filledApps.count {
-            filledApps.insert(contentsOf: AppInfo.createEmptyAppsInfo(count: rows), at: position)
-            position += rows * 2
+        let elementsPerPage = rows * columns
+        let totalPages = (filledApps.count + elementsPerPage - 1) / elementsPerPage
+        let totalColumnsPerPage = 2 * columns + 1
+        let totalElements = totalPages * rows * totalColumnsPerPage
+        
+        var arrayIndex = 0
+        var result: [AppInfo] = []
+
+        // Fill result array with blank elements
+        for _ in 0..<totalElements {
+            result.append(AppInfo.emptyAppInfo)
+        }
+        
+        for page in 0..<totalPages {
+            let pageOffset = page * rows * totalColumnsPerPage // Calculates the starting index (offset) of where a given page begins in the resulting array
             
-            let remainder = (position + shift) % ((appsPerPage * 2) - rows)
-            if remainder == rows {
-                filledApps.insert(contentsOf: AppInfo.createEmptyAppsInfo(count: rows), at: position)
-                position += rows
-                shift += rows
+            for column in 0..<columns {
+                let columnIndex = 1 + column * 2 // Position of this data column: 1 (initial) + column * 2 (skipping blank columns)
+                let initialColumnIndexInArray = pageOffset + columnIndex * rows // Calculates the starting index of this column in the result array
+                
+                for row in 0..<rows {
+                    let resultIndex = initialColumnIndexInArray + row // Calculates the exact position in the resulting array where the element should be inserted
+                    
+                    if arrayIndex < filledApps.count {
+                        result[resultIndex] = filledApps[arrayIndex]
+                        arrayIndex += 1
+                    }
+                }
             }
         }
         
-        // Adiciona a quantidade de apps em branco necessário para que
-        // cada página fique com a quantidade uniforme de apps
-        let count = filledApps.count
-        let remainder = count % (appsPerPage * 2 + rows)
-        let elementsToAdd = (appsPerPage * 2) - remainder
-        
-        filledApps.append(contentsOf: AppInfo.createEmptyAppsInfo(count: elementsToAdd))
-        
-        return filledApps
+        return result
     }
     
     var body: some View {

@@ -42,7 +42,10 @@ struct LaunchpadView: View {
         if searchText.isEmpty {
             filledApps = viewModel.apps
         } else {
-            filledApps = viewModel.apps.filter { $0.name.localizedCaseInsensitiveContains(searchText) }
+            filledApps = viewModel.apps.filter { app in
+                guard let name = app.name else { return false }
+                return name.localizedCaseInsensitiveContains(searchText)
+            }
         }
         
         let elementsPerPage = rows * columns

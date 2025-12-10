@@ -18,7 +18,6 @@ struct AppGridView: View {
     private let iconSize: CGFloat
     private let verticalSpacing: CGFloat
     private let gridRows: [GridItem]
-
     
     init(
         viewModel: AppScanner,
@@ -56,8 +55,8 @@ struct AppGridView: View {
     
     func handleAppClick(_ app: AppInfo) {
         let alert = NSAlert()
-        alert.messageText = "Abrindo \(app.name)"
-        alert.informativeText = "App clicado: \(app.name)"
+        alert.messageText = "Abrindo \(String(describing: app.name))"
+        alert.informativeText = "App clicado: \(String(describing: app.name))"
         alert.alertStyle = .informational
         alert.addButton(withTitle: "OK")
         alert.runModal()

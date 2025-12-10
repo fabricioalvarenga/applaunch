@@ -32,7 +32,12 @@ class AppScanner {
             scannedApps.append(contentsOf: apps)
         }
         
-        scannedApps.sort { $0.name.localizedCaseInsensitiveCompare($1.name) == .orderedAscending }
+        scannedApps.sort { first, second in
+            guard let firstName = first.name,
+                  let secondName = second.name else { return false }
+            
+            return firstName.localizedCaseInsensitiveCompare(secondName) == .orderedAscending
+        }
         
         DispatchQueue.main.async {
             self.apps = scannedApps

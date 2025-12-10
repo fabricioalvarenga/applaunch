@@ -22,14 +22,15 @@ struct AppIconView: View {
    
     var body: some View {
         VStack(spacing: 4) {
-            if let icon = app.icon {
+            if let name = app.name,
+               let icon = app.icon {
                 Image(nsImage: icon)
                     .resizable()
                     .frame(height: iconSize)
                     .scaleEffect(isHovered ? 1.1 : 1.0)
                     .animation(.spring(response: 0.3, dampingFraction: 0.6), value: isHovered)
                 
-                Text(app.name)
+                Text(name)
                     .font(.system(size: 12, weight: .medium))
                     .foregroundStyle(.white)
                     .lineLimit(1)

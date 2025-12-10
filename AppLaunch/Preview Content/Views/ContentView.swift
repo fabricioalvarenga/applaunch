@@ -9,7 +9,7 @@ import SwiftUI
 
 struct ContentView: View {
     @State private var viewModel = AppScanner()
-    @State private var appClosed = true
+    @State private var appWillClose = true
     
     private let screenWidth = NSScreen.main?.visibleFrame.width ?? 800
     private let scrrenHeight = NSScreen.main?.visibleFrame.height ?? 800
@@ -20,8 +20,8 @@ struct ContentView: View {
                 .ignoresSafeArea()
                 .opacity(0.5)
             
-            if !appClosed {
-                LaunchpadView(viewModel: viewModel, appClosed: $appClosed)
+            if !appWillClose {
+                LaunchpadView(viewModel: viewModel, appWillClose: $appWillClose)
                     .transition(
                         AnyTransition.asymmetric(insertion: .launchpadOpen, removal: .launchpadClose)
                     )
@@ -31,15 +31,15 @@ struct ContentView: View {
         .frame(width: screenWidth, height: scrrenHeight)
         .onTapGesture {
             withAnimation(.spring(response: 0.1, dampingFraction: 1.0)) {
-                appClosed = true
+                appWillClose = true
             }
         }
         .onAppear {
             withAnimation(.spring(response: 0.5, dampingFraction: 1.0)) {
-                appClosed = false
+                appWillClose = false
             }
         }
-        .onChange(of: appClosed) { oldValue, newValue in
+        .onChange(of: appWillClose) { oldValue, newValue in
             if newValue {
                 DispatchQueue.main.asyncAfter(deadline: .now() + 0.125) {
                     NSApplication.shared.terminate(nil)

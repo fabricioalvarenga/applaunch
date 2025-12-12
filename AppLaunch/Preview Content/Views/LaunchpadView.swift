@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct LaunchpadView: View {
-    @Bindable var viewModel: AppScanner
+    @State private var viewModel = AppScanner()
     @State private var searchText = ""
     @Binding var appWillClose: Bool
     
@@ -16,12 +16,10 @@ struct LaunchpadView: View {
     private var rows: Int
     
     init(
-        viewModel: AppScanner,
         columns: Int = 7,
         rows: Int = 5,
         appWillClose: Binding<Bool> = Binding.constant(false)
     ) {
-        self._viewModel = Bindable(viewModel)
         self.columns = columns
         self.rows = rows
         self._appWillClose = appWillClose

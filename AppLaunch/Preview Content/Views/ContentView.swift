@@ -8,7 +8,6 @@
 import SwiftUI
 
 struct ContentView: View {
-    @State private var viewModel = AppScanner()
     @State private var appWillClose = true
     
     private let screenWidth = NSScreen.main?.visibleFrame.width ?? 800
@@ -21,7 +20,7 @@ struct ContentView: View {
                 .opacity(0.5)
             
             if !appWillClose {
-                LaunchpadView(viewModel: viewModel, appWillClose: $appWillClose)
+                LaunchpadView(appWillClose: $appWillClose)
                     .transition(
                         AnyTransition.asymmetric(insertion: .launchpadOpen, removal: .launchpadClose)
                     )

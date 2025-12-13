@@ -26,6 +26,7 @@ struct ContentView: View {
                 
             }
         }
+        .ignoresSafeArea()
         .frame(width: screenWidth, height: scrrenHeight)
         .onTapGesture {
             withAnimation(.spring(response: 0.1, dampingFraction: 1.0)) {

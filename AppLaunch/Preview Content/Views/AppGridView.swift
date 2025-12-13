@@ -40,7 +40,7 @@ struct AppGridView: View {
     }
     
     var body: some View {
-        LazyHGrid(rows: gridRows, spacing: 0) {
+        LazyHGrid(rows: gridRows, alignment: .top, spacing: 0) {
             ForEach(apps) { app in
                 AppIconView(app: app, iconSize: iconSize) {
                     viewModel.launchApp(app)

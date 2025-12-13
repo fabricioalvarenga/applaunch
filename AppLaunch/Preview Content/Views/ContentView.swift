@@ -15,10 +15,9 @@ struct ContentView: View {
     
     var body: some View {
         ZStack {
-            Color.clear
-                .background(.ultraThickMaterial)
-                .opacity(0.5)
-            
+            Color.white
+                .opacity(0.7)
+
             if !appWillClose {
                 LaunchpadView(appWillClose: $appWillClose)
                     .transition(

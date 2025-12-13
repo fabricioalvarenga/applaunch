@@ -18,6 +18,8 @@ struct AppLaunchApp: App {
                 .frame(width: screenWidth, height: scrrenHeight)
                 .background(Color.transparent)
                 .onAppear {
+                    NSApp.presentationOptions = [.hideDock]
+                    
                     if let window = NSApplication.shared.windows.first {
                         window.standardWindowButton(.closeButton)?.isHidden = true
                         window.standardWindowButton(.miniaturizeButton)?.isHidden = true

@@ -12,6 +12,7 @@ struct AppLaunchApp: App {
     var body: some Scene {
         WindowGroup {
             ContentView()
+                .background(Color.transparent)
                 .onAppear {
                     if let window = NSApplication.shared.windows.first {
                         window.standardWindowButton(.closeButton)?.isHidden = true

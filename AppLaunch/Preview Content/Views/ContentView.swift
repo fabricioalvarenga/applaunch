@@ -15,8 +15,8 @@ struct ContentView: View {
     
     var body: some View {
         ZStack {
-            Color.blue
-                .ignoresSafeArea()
+            Color.clear
+                .background(.ultraThickMaterial)
                 .opacity(0.5)
             
             if !appWillClose {

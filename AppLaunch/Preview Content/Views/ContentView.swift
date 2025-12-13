@@ -10,9 +10,6 @@ import SwiftUI
 struct ContentView: View {
     @State private var appWillClose = true
     
-    private let screenWidth = NSScreen.main?.visibleFrame.width ?? 800
-    private let scrrenHeight = NSScreen.main?.visibleFrame.height ?? 800
-    
     var body: some View {
         ZStack {
             Color.white
@@ -27,7 +24,6 @@ struct ContentView: View {
             }
         }
         .ignoresSafeArea()
-        .frame(width: screenWidth, height: scrrenHeight)
         .onTapGesture {
             withAnimation(.spring(response: 0.1, dampingFraction: 1.0)) {
                 appWillClose = true

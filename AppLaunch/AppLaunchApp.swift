@@ -9,9 +9,13 @@ import SwiftUI
 
 @main
 struct AppLaunchApp: App {
+    private let screenWidth = NSScreen.main!.visibleFrame.width
+    private let scrrenHeight = NSScreen.main!.visibleFrame.height
+ 
     var body: some Scene {
         WindowGroup {
             ContentView()
+                .frame(width: screenWidth, height: scrrenHeight)
                 .background(Color.transparent)
                 .onAppear {
                     if let window = NSApplication.shared.windows.first {

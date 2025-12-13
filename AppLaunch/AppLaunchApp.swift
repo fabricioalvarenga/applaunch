@@ -9,13 +9,16 @@ import SwiftUI
 
 @main
 struct AppLaunchApp: App {
-    private let screenWidth = NSScreen.main!.visibleFrame.width
-    private let scrrenHeight = NSScreen.main!.visibleFrame.height
- 
+    private let visibleFrameWidth = NSScreen.main!.visibleFrame.width
+    private let visibleFrameHeight = NSScreen.main!.visibleFrame.height
+    private let menubarHeight = NSScreen.main!.frame.height -
+    NSScreen.main!.visibleFrame.height -
+    NSScreen.main!.visibleFrame.origin.y
+    
     var body: some Scene {
         WindowGroup {
             ContentView()
-                .frame(width: screenWidth, height: scrrenHeight)
+                .frame(width: visibleFrameWidth, height: visibleFrameHeight + menubarHeight)
                 .background(Color.transparent)
                 .onAppear {
                     NSApp.presentationOptions = [.hideDock]

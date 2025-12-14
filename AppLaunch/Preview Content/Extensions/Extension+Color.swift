@@ -10,22 +10,7 @@ import AppKit
 
 extension Color {
     static var transparent: some View {
-        MakeViewTransparent()
+        MakeTransparentView()
     }
 }
 
-struct MakeViewTransparent: NSViewRepresentable {
-    func makeNSView(context: Context) -> NSView {
-        let view = NSView()
-        DispatchQueue.main.async {
-            if let window = view.window {
-                window.isOpaque = false
-                window.backgroundColor = .clear
-                window.titlebarAppearsTransparent = true
-            }
-        }
-        return view
-    }
-    
-    func updateNSView(_ nsView: NSView, context: Context) {}
-}

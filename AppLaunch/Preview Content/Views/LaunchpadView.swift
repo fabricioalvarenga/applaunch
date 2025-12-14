@@ -36,7 +36,7 @@ struct LaunchpadView: View {
                 .scrollTargetBehavior(.paging)
             }
         }
-        .background(Color.black.opacity(0.4))
+        .background(Color.blue.blur(radius: 200))
     }
     
     private var searchTextField: some View {

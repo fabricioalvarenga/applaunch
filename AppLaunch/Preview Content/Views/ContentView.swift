@@ -15,7 +15,7 @@ struct ContentView: View {
             Color.white
                 .opacity(0.7)
 
-                LaunchpadView(appWillClose: $appWillClose)
+            LaunchpadView(appWillClose: $appWillClose)
         }
         .ignoresSafeArea()
         .onTapGesture {

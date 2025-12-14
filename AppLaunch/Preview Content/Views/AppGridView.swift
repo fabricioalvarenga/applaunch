@@ -11,37 +11,28 @@ struct AppGridView: View {
     @Bindable var viewModel: AppScanner
     @Binding var appWillClose: Bool
     
-    private let rows: Int
-    private let columns: Int
-    private let apps: [AppInfo]
     private let geometry: GeometryProxy
     private let iconSize: CGFloat
     private let verticalSpacing: CGFloat
     private let gridRows: [GridItem]
     
-    init(
-        viewModel: AppScanner,
-        rows: Int,
-        columns: Int,
-        apps: [AppInfo],
-        geometry: GeometryProxy,
-        appWillClose: Binding<Bool> = Binding.constant(false)
-    ) {
-        self._viewModel = Bindable(viewModel)
-        self.rows = rows
-        self.columns = columns
-        self.apps = apps
+    private var appsPerPage: Int {
+        viewModel.columns * viewModel.rows
+    }
+    
+    init(viewModel: AppScanner, geometry: GeometryProxy, appWillClose: Binding<Bool> = Binding.constant(false)) {
         self.geometry = geometry
+        self._viewModel = Bindable(viewModel)
         self._appWillClose = appWillClose
         
-        iconSize = geometry.size.width / ((CGFloat(columns) * 2) + 1) 
-        verticalSpacing = (geometry.size.height - (iconSize * CGFloat(rows))) / CGFloat(rows + 1)
-        gridRows = Array(repeating: GridItem(.fixed(iconSize), spacing: verticalSpacing * 0.8), count: rows)
+        iconSize = geometry.size.width / ((CGFloat(viewModel.columns) * 2) + 1)
+        verticalSpacing = (geometry.size.height - (iconSize * CGFloat(viewModel.rows))) / CGFloat(viewModel.rows + 1)
+        gridRows = Array(repeating: GridItem(.fixed(iconSize), spacing: verticalSpacing * 0.8), count: viewModel.rows)
     }
     
     var body: some View {
         LazyHGrid(rows: gridRows, alignment: .top, spacing: 0) {
-            ForEach(apps) { app in
+            ForEach(viewModel.filteredApps) { app in
                 AppIconView(app: app, iconSize: iconSize) {
                     viewModel.launchApp(app)
                     appWillClose = true

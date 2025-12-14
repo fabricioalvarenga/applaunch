@@ -11,8 +11,11 @@ import CoreServices
 @Observable
 class AppScanner {
     var apps: [AppInfo] = []
+    var searchText: String = ""
     
     private let fileManager = FileManager.default
+    let rows = 5
+    let columns = 7
     
     private let applicationDirectories = [
         "/Applications",
@@ -24,6 +27,56 @@ class AppScanner {
         scanApplications()
     }
     
+    // Filters apps based on the search field
+    // Adds a blank app column at the beginning of the array
+    // Adds a blank app column between each column of the array
+    // Adds the necessary number of blank apps so that each page has a uniform number of apps
+    var filteredApps: [AppInfo] {
+        var filledApps: [AppInfo] = []
+        
+        if searchText.isEmpty {
+            filledApps = apps
+        } else {
+            filledApps = apps.filter { app in
+                guard let name = app.name else { return false }
+                return name.localizedCaseInsensitiveContains(searchText)
+            }
+        }
+        
+        let elementsPerPage = rows * columns
+        let totalPages = (filledApps.count + elementsPerPage - 1) / elementsPerPage
+        let totalColumnsPerPage = 2 * columns + 1
+        let totalElements = totalPages * rows * totalColumnsPerPage
+        
+        var arrayIndex = 0
+        var result: [AppInfo] = []
+
+        // Fill result array with blank elements
+        for _ in 0..<totalElements {
+            result.append(AppInfo.emptyAppInfo)
+        }
+        
+        for page in 0..<totalPages {
+            let pageOffset = page * rows * totalColumnsPerPage // Calculates the starting index (offset) of where a given page begins in the resulting array
+            
+            for column in 0..<columns {
+                let columnIndex = 1 + column * 2 // Position of this data column: 1 (initial) + column * 2 (skipping blank columns)
+                let initialColumnIndexInArray = pageOffset + columnIndex * rows // Calculates the starting index of this column in the result array
+                
+                for row in 0..<rows {
+                    let resultIndex = initialColumnIndexInArray + row // Calculates the exact position in the resulting array where the element should be inserted
+                    
+                    if arrayIndex < filledApps.count {
+                        result[resultIndex] = filledApps[arrayIndex]
+                        arrayIndex += 1
+                    }
+                }
+            }
+        }
+        
+        return result
+    }
+ 
     private func scanApplications() {
         var scannedApps: [AppInfo] = []
         
@@ -43,7 +96,6 @@ class AppScanner {
             self.apps = scannedApps
         }
     }
-    
     
     private func getApplications(from directory: String) -> [AppInfo] {
         var applications: [AppInfo] = []

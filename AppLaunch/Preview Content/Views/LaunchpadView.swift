@@ -25,16 +25,7 @@ struct LaunchpadView: View {
             }
             .padding(.vertical, 32)
             
-            GeometryReader { geometry in
-                ScrollView(.horizontal, showsIndicators: false) {
-                    AppGridView(
-                        viewModel: viewModel,
-                        geometry: geometry,
-                        appWillClose: $appWillClose
-                    )
-                }
-                .scrollTargetBehavior(.paging)
-            }
+            AppGridView(viewModel: viewModel, appWillClose: $appWillClose)
         }
         .background(Color.blue.blur(radius: 200))
     }

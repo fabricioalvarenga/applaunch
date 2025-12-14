@@ -21,16 +21,16 @@ struct ContentView: View {
         .onTapGesture {
             appWillClose = true
         }
+        .onKeyPress(.escape) {
+            appWillClose = true
+            return .handled
+        }
         .onChange(of: appWillClose) { _, willClose in
             if willClose {
                 DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
                     NSApplication.shared.terminate(nil)
                 }
             }
-        }
-        .onKeyPress(.escape) {
-            appWillClose = true
-            return .handled
         }
     }
 }

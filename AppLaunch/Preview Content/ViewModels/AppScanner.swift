@@ -10,13 +10,12 @@ import CoreServices
 
 @Observable
 class AppScanner {
-    var apps: [AppInfo] = []
     var searchText: String = ""
-    
-    private let fileManager = FileManager.default
     let rows = 5
     let columns = 7
-    
+    private var scannedApps: [AppInfo] = []
+    private let fileManager = FileManager.default
+   
     private let applicationDirectories = [
         "/Applications",
         "/System/Applications",
@@ -27,24 +26,30 @@ class AppScanner {
         scanApplications()
     }
     
-    // Filters apps based on the search field
-    // Adds a blank app column at the beginning of the array
-    // Adds a blank app column between each column of the array
-    // Adds the necessary number of blank apps so that each page has a uniform number of apps
-    var filteredApps: [AppInfo] {
-        var filledApps: [AppInfo] = []
+    private var filteredApps: [AppInfo] {
+        var result: [AppInfo] = []
         
-        if searchText.isEmpty {
-            filledApps = apps
+         if searchText.isEmpty {
+            result = scannedApps
         } else {
-            filledApps = apps.filter { app in
+            result = scannedApps.filter { app in
                 guard let name = app.name else { return false }
                 return name.localizedCaseInsensitiveContains(searchText)
             }
         }
         
+        return result
+    }
+    
+    private var totalPages: Int {
         let elementsPerPage = rows * columns
-        let totalPages = (filledApps.count + elementsPerPage - 1) / elementsPerPage
+        return (filteredApps.count + elementsPerPage - 1) / elementsPerPage
+    }
+    
+    // Adds a blank app column at the beginning of the array
+    // Adds a blank app column between each column of the array
+    // Adds the necessary number of blank apps so that each page has a uniform number of apps
+    var apps: [AppInfo] {
         let totalColumnsPerPage = 2 * columns + 1
         let totalElements = totalPages * rows * totalColumnsPerPage
         
@@ -66,8 +71,8 @@ class AppScanner {
                 for row in 0..<rows {
                     let resultIndex = initialColumnIndexInArray + row // Calculates the exact position in the resulting array where the element should be inserted
                     
-                    if arrayIndex < filledApps.count {
-                        result[resultIndex] = filledApps[arrayIndex]
+                    if arrayIndex < filteredApps.count {
+                        result[resultIndex] = filteredApps[arrayIndex]
                         arrayIndex += 1
                     }
                 }
@@ -93,7 +98,7 @@ class AppScanner {
         }
         
         DispatchQueue.main.async {
-            self.apps = scannedApps
+            self.scannedApps = scannedApps
         }
     }
     

@@ -11,10 +11,6 @@ struct AppGridView: View {
     @Bindable var viewModel: AppScanner
     @Binding var appWillClose: Bool
     
-    private var appsPerPage: Int {
-        viewModel.columns * viewModel.rows
-    }
-    
     init(viewModel: AppScanner, appWillClose: Binding<Bool> = Binding.constant(false)) {
         self._viewModel = Bindable(viewModel)
         self._appWillClose = appWillClose
@@ -28,7 +24,7 @@ struct AppGridView: View {
             
             ScrollView(.horizontal, showsIndicators: false) {
                 LazyHGrid(rows: gridRows, alignment: .top, spacing: 0) {
-                    ForEach(viewModel.filteredApps) { app in
+                    ForEach(viewModel.apps) { app in
                         AppIconView(app: app, iconSize: iconSize) {
                             viewModel.launchApp(app)
                             appWillClose = true

@@ -8,7 +8,6 @@
 import SwiftUI
 
 struct ContentView: View {
-    @FocusState private var isFocused: Bool
     @State private var appWillClose = false
     
     var body: some View {
@@ -19,17 +18,12 @@ struct ContentView: View {
                 LaunchpadView(appWillClose: $appWillClose)
         }
         .ignoresSafeArea()
-        .focusable()
-        .focused($isFocused)
         .onTapGesture {
             appWillClose = true
         }
-        .onAppear {
-            isFocused = true
-        }
-        .onChange(of: appWillClose) { oldValue, newValue in
-            if newValue {
-                DispatchQueue.main.asyncAfter(deadline: .now() + 0.125) {
+        .onChange(of: appWillClose) { _, willClose in
+            if willClose {
+                DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
                     NSApplication.shared.terminate(nil)
                 }
             }

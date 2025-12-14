@@ -8,6 +8,7 @@
 import SwiftUI
 
 struct LaunchpadView: View {
+    @FocusState private var isFocused
     @State private var viewModel = AppScanner()
     @State private var searchText = ""
     @Binding var appWillClose: Bool
@@ -118,6 +119,7 @@ struct LaunchpadView: View {
                 
                 TextField("", text: $searchText)
                     .textFieldStyle(.plain)
+                    .focused($isFocused)
             }
             .foregroundStyle(.white.opacity(0.8))
             .font(.system(size: 16))
@@ -129,6 +131,8 @@ struct LaunchpadView: View {
             RoundedRectangle(cornerRadius: 12)
                 .stroke(Color.white.opacity(0.5), lineWidth: 1)
         )
-        
+        .onAppear {
+            isFocused = true
+        }
     }
 }

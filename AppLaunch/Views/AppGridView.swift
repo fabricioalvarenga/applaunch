@@ -36,34 +36,32 @@ struct AppGridView: View {
                             }
                         }
                     }
-                    .background(
-                        GeometryReader { innerGeometry in
-                            Color.clear
-                                .preference(key: ScrollOffsetPreferenceKey.self, value: innerGeometry.frame(in: .global).minX)
-                                .onPreferenceChange(ScrollOffsetPreferenceKey.self) { offset in
-                                    let pageWidth = outerGeometry.size.width
-                                    let newPage = Int(round(-offset / pageWidth))
-                                    
-                                    if newPage >= 0 && newPage < viewModel.totalPages {
-                                        currentPage = newPage
-                                    }
-                                }
+                    .onScrollViewOffsetChanged { offset in
+                        let pageWidth = outerGeometry.size.width
+                        let newPage = Int(round(-offset / pageWidth))
+                        
+                        if newPage >= 0 && newPage < viewModel.totalPages {
+                            currentPage = newPage
                         }
-                    )
+                    }
                 }
                 .frame(maxHeight: .infinity)
                 .scrollTargetBehavior(.paging)
                 
-                HStack(spacing: 8) {
-                    ForEach(0..<viewModel.totalPages, id: \.self) { page in
-                        Circle()
-                            .fill(page == currentPage ? .white : .white.opacity(0.5))
-                            .frame(width: 8, height: 8)
-                    }
-                }
-                .padding(.bottom, 36)
+                pageIndicators
             }
             
         }
+    }
+    
+    private var pageIndicators: some View {
+        HStack(spacing: 8) {
+            ForEach(0..<viewModel.totalPages, id: \.self) { page in
+                Circle()
+                    .fill(page == currentPage ? .white : .white.opacity(0.5))
+                    .frame(width: 8, height: 8)
+            }
+        }
+        .padding(.bottom, 36)
     }
 }

@@ -41,7 +41,7 @@ class AppScanner {
         return result
     }
     
-    private var totalPages: Int {
+    var totalPages: Int {
         let elementsPerPage = rows * columns
         return (filteredApps.count + elementsPerPage - 1) / elementsPerPage
     }

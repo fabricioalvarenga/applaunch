@@ -4,8 +4,11 @@
 
 .DS_Store
 
-## User settings
+## Xcode - files generated locally
+DerivedData/
+build/
 xcuserdata/
+*.xcuserstate
 
 ## Obj-C/Swift specific
 *.hmap
@@ -62,3 +65,6 @@ fastlane/report.xml
 fastlane/Preview.html
 fastlane/screenshots/**/*.png
 fastlane/test_output
+
+# Temporary logs
+*.log
